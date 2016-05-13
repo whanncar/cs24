@@ -156,6 +156,17 @@ key_value_set *rectify_new_key_position(multimap *mm) {
 
     /* Implement UNRESOLVED */
 
+    /*
+     * While this guy is less than its parent
+     *      Bubble up
+     * While this guy is less than left child
+     *      Bubble down
+     *
+     * If necessary, swap this guy to the next tree to the left
+     * 
+     * Repeat
+     */
+
 }
 
 
