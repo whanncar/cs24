@@ -1,0 +1,1 @@
+Because the remainder is never decreased (it is always decreased by 0), the branch statement which takes the program out of the loop is never activated, so the program never leaves the loop. Thus, the program will loop indefinitely unless the system knows to halt after a fixed maximum number of steps.

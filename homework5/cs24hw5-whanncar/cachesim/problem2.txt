@@ -1,0 +1,28 @@
+
+
+d.
+
+./heapsort 32:256:1
+
+Cache miss rate: 2.4 %
+
+
+
+e.
+
+./heapsort 32:1:256
+
+Cache miss rate: 2.45 %
+
+
+g.
+
+
+./heapsort 32:256:1
+
+Cache miss rate: 2.4 %
+
+
+./heapsort 32:1:256
+
+Cache miss rate: 2.26 %

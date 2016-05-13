@@ -1,0 +1,21 @@
+Put m = 1
+while !(m <= lilsigma < 2*m)
+	if m < lilsigma
+		m *= 2
+	else
+		m /= 2
+m *= 2^-22
+
+make new array reduced_values and copy values over
+
+for each value in reduced_values
+	reduced_values[i] = reduced_values[i] mod m (positive)
+
+reduced_sum = 0
+
+for each value in reduced_values
+	reduced_sum += reduced_values[i]
+	reduced_sum = reduced_sum mod m
+
+if reduced_sum*2 >= m
+	lilsigma += m

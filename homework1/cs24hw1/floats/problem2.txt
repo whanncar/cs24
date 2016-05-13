@@ -1,0 +1,13 @@
+First, let's consider why the approaches "add in increasing order of magnitude" (ascending approach) and "add in descending order of magnitude" (descending approach) might give different results.
+
+If the sum is large before it gets to smaller values, the smaller values may end up not contributing, since each is to insignificant (and thus gets rounded when adding). This is much more likely to happen if the descending approach is used.
+
+On the other hand, if the ascending approach is used, fewer values will be affected by rounding, since the sum will not get large as fast.
+
+Finally, if the values are added in the order that they appear, any large values which appear early in the list may cause the sum to become large enough that small values which appear later will be rounded when added to sum.
+
+
+
+One obvious kind of input that would cause an error is a list which contains very many sufficiently large numbers, since this can result in overflow.
+
+Another example is a list which contains a large number of small positive numbers. For example, for a list with the value 1 repeated more times than the largest number that float can represent, sum would eventually be large enough that 1 would be rounded to 0 when being added to sum, so the result would be some big number rather than overflow.

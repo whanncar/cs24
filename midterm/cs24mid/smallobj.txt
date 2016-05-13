@@ -1,0 +1,147 @@
+
+
+1.
+
+This will very likely cause memory fragmentation, since there is no
+guarantee that objects that are adjacent in memory will be freed at
+similar times, with the result that there will be a large number of
+small free blocks (blocks of size sizeof(object)) scattered throughout
+memory which cannot be coalesced.
+
+Thus, during the runtime of the program, any other programs requesting
+memory will be forced to use free blocks at higher and higher memory
+addresses, potentially eventually causing allocation failure. (Note,
+however, that if this program is the only one running and it does not
+need memory for anything other than these objects, the fragmentation
+will not cause allocation failure, because all of the objects are the
+same size, so the allocator will be able to allocate any of the freed
+memory blocks, so allocation failure can only result from the program
+requiring more memory than is actually available, not from fragmentation
+issues.)
+
+
+
+2.
+
+Again, if any requests for memory that are larger than sizeof(object)
+are made, the allocator will eventually need to walk through a very
+long list of free blocks in order to find one whose size is not
+sizeof(object). Thus, any such memory requests will incur a relatively
+large time cost. Further, if there is an explicit free list (which
+does not make use of the free blocks for storing information), then
+there will be both large time overhead for the upkeep of the free list
+and large space cost for storing the free list, since there will likely
+be a large number of free blocks.
+
+3.
+
+The main benefits of this approach over the general purpose allocator
+are that freeing is very infrequent and that this approach helps avoid
+memory fragmentation.
+
+The issues it causes are that, despite avoiding memory fragmentation,
+there will often be large pieces of allocated but unused memory. Thus,
+the approach is not very space efficient (in terms of ratio of memory
+it is actually using to memory it has allocated.) Another issue is that
+while the general purpose allocator will be able to make use of small
+pieces of free memory, this approach always requests large pieces of
+memory, so it is conceivable that an allocation could fail when in fact
+there is plenty of memory, just no contiguous memory large enough to hold
+a whole chunk.
+
+
+
+4.
+
+This will fare much worse, since chunks will be allocated much
+more frequently than they are freed, because chunks will
+tend to have several objects with longer lifetimes.
+
+For this reason, much more memory will remain allocated than
+is necessary to store the objects, so the memory usage will
+be unnecessarily large at any given time, and in fact will
+steadily grow on average as the program runs.
+
+
+
+5.
+
+I propose here a slightly involved solution to the problem.
+
+
+The changes to be made to the data structures are as follows:
+
+a. Make a new struct called object_header, which contains an
+object_header pointer called start, a char called is_free, and
+a char called is_head.
+
+b. Add two chunk pointers to the chunk struct, called prev and next,
+and add a char to the chunk struct called old. Also, rename num_freed
+to num_free.
+
+c. When initializing a chunk, set object_size to
+(sizeof(object_header) + sizeof(object)) rather than just sizeof(object).
+
+
+The small object allocator will now work as follows:
+
+a. There will be two global variables, a pointer to a chunk called
+current_chunk and a pointer to an object_header called current_free_block.
+
+b. At the start of the program, initialize a single chunk with both
+prev and next pointing to the chunk and with old set to 0,
+set current_chunk to point to this chunk, and set current_free_block
+to point to this chunk's mem.
+
+c. Let small object allocation work as follows:
+
+If current_chunk is not old and num_free is nonzero
+    Store an object header followed by the object at current_free_block
+    Set the is_free to false
+    If the allocated block is preceded by another allocated block
+        Set start to the start value of the preceding block
+    Otherwise
+        Set start to the address of the new allocated block's header
+    If there is a free block farther right in current_chunk
+        Set current_free_block equal to that free block
+    Otherwise
+        Walk forward through the linked list of chunks until
+        reaching one with a free block or finding that they are all full
+        If a chunk with a free block is found
+            Set current_chunk to this chunk and current_free_block to the
+            earliest free block
+        Otherwise
+            Allocate a new chunk
+            Add it to the circular doubly linked list of chunks just after
+            current_chunk
+            Set current chunk to this chunk and current_free_block to the
+            beginning of this chunk's mem
+
+
+d. Small object freeing is done by setting the chunk's is_free to true and
+   adding it into the doubly linked list of free blocks in the chunk (and
+   breaking the contiguous portion of allocated memory it was in into two
+   contiguous pieces if necessary.
+
+   Each time this freeing process is done, check whether the chunk is
+   empty. If it is (and it is not the only chunk left in existence),
+   remove it from the circular doubly linked list and free it.
+
+
+How this approach mitigates the issues previously discussed:
+
+The main idea behind this kind of approach is that it allows
+chunks which have free space to continue to be useful. In
+particular, there are never more chunks allocated unless all
+chunks that currently exist are destroyed, so that the memory
+usage will never be greater than the program's peak memory usage.
+
+
+The benefits of the particular approach that I have outlined are:
+
+Allocation is usually constant time, but is never worse than linear
+time in the number of chunks (and is rarely that bad.)
+
+Deallocation is always constant time.
+
+

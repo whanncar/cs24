@@ -1,0 +1,5 @@
+Let r be the smallest positive integer such that 2^r appears in the binary representation of n. Then n-1 has the powers of 2 greater than 2^r in its binary representation that n had, but does not have 2^r and has all powers of 2 smaller than 2^r. Thus,the int n&(n-1) has 1's in exactly the positions that n did except for the 1 which was in position r.
+
+Since n=n&(n-1) turns exactly one of the 1's in the binary representation of n into a 0, applying this exactly k times (where k is the number of 1's in the binary representation of n) will result in n being equal to 0, but applying it fewer than k times will leave n nonzero.
+
+Thus, this algorithm requires only k iterations (where k depends on the particular number) rather than sizeof(unsigned int) iterations.

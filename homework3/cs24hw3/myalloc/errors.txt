@@ -1,0 +1,32 @@
+a.
+
+myfree alters some information, but then to coalesce,
+it interprets some bytes as a memory address, so it
+would most likely seg fault for this reason if called
+on an address that did not originate from myalloc or
+that is contained within an allocated memory block.
+
+If myfree were called on an address that had already
+been freed, it would likely alter the linked list
+structure and alter size values, or simply seg fault
+for the same reason given above.
+
+b.
+
+Since in my implementation all of my blocks (free and
+allocated) are in a linked list, a more robust version
+of the allocator could be easily implemented by adding
+a method "is_allocated" which iterates through the blocks
+to check to see whether any of them correspond to the
+pointer passed for freeing and returns true or false
+accordingly.
+
+Thus, the only change would be to invoke is_allocated
+on the pointer passed to myfree at the beginning of
+myfree, and if is_allocated returns false, then print
+the pointer that was passed.
+
+As well, a value could be added as the first several
+bytes of memory which holds the status of the allocator/memory,
+so that if the status is, for example, -1, all myalloc
+and myfree calls simply return.

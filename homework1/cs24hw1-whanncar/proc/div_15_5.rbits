@@ -1,0 +1,8 @@
+000f	#Set register 0 to 15
+0005	#Set register 1 to 5
+8000	#Set bit 31 in register 2 to 1 and all other bits to 0; this will be used for bitmasking
+0000	#Set register 3 to 0
+0000	#Set register 4 to 0
+0000	#Set register 5 to 0
+0000	#Set register 6 to 0
+0000	#Set register 7 to 0

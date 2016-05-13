@@ -1,0 +1,22 @@
+
+
+1. I changed the beginning of the find space loop so that
+the byte storing the number of occurrences would be moved 
+into al, then eax would be added to the running total
+
+
+
+2. I changed the amount that esi is incremented in the find
+space loop from 1 to 2, since the address of each
+(count, value) pair is 2 bytes after the previous one.
+
+
+
+3. I moved the data buffer back into %ecx after the malloc
+call, since in cdecl %ecx is a caller save register
+
+
+
+4. I added a line to increment edi each time in the write loop
+so that the character would be written to the correct address
+(rather than the same address over and over).

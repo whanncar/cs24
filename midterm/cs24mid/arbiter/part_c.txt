@@ -1,0 +1,39 @@
+
+
+
+    BZ R2, Endloop
+Loop:
+    BLK               # Added BLK here                                              
+    LD R0, R3                                                       
+    LD R1, R4                                                       
+    ADD R3, R4, R5                
+    ST R5, R7                                                       
+    BUN               # Added BUN here                                             
+    INC R0                               
+    INC R1                                                          
+    INC R7                                                          
+    DEC R2                                                          
+    BNZ R2, Loop                                                  
+EndLoop:
+    DONE                                                            
+
+
+
+
+When only one processor is running, there will now be at most
+one wasted cycle while the processor waits to be granted access,
+so that execution will take around 10/9 as long as in the no
+arbiter case.
+
+
+
+
+When both processors are running, there still be at most 1 wasted
+cycle (except perhaps in the first pass), even assuming that the
+processors start execution at the same time, since one processor
+can perform the four high operations (LD, LD, ADD, ST) while the
+other processor performs the five low operations (INC, INC, INC, DEC, BNZ).
+
+Thus, the performance in the two processor case with this implementation
+will be essentially the same as the performance in the one processor case
+with this implementation.

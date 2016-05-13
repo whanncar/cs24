@@ -1,0 +1,50 @@
+
+
+a.
+
+Let m be the number of cache misses per second and
+let h be the number of cache hits per second.
+
+Then
+
+m + h = 750000000
+
+100 * m + 1 * h = 3000000000
+
+Substituting h = 750000000 - m into the second equation gives
+
+100 * m + 750000000 - m = 3000000000
+
+=> m = 2250000000/99
+
+So the miss rate is
+
+m / (m + h) = (2250000000 / 99) / 750000000 = 1 / 33 
+
+which is approximately 3.03 %.
+
+
+
+b.
+
+Setting up the same equations,
+but with number of instructions/second = 1500000000, we get
+
+m + h = 1500000000
+
+100 * m + 1 * h = 3000000000
+
+Substituting h = 1500000000 - m into the second equation gives
+
+100 * m + 1500000000 - m = 3000000000
+
+=> m = 1500000000 / 99
+
+So the miss rate is
+
+m / (m + h) = (1500000000 / 99) / 1500000000 = 1/99
+
+which is approximately 1.01 %.
+
+Thus, in order to double the performance, we need to reduce the
+miss rate by a factor of 3.

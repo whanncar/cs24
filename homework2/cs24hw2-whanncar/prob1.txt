@@ -1,0 +1,10 @@
+Store the value at 8(%ebp) into %eax
+Multiply the value in %eax by 3 and store the result mod 2^32 in %eax
+Add 12 to the value in %eax and store the result mod 2^32 in %eax
+Multiply the value at 8(%ebp) by the value in %eax and
+  store the result mod 2^32 in %eax
+Subtract 17 from the value in %eax and store the result mod 2^32 in %eax
+
+Thus, the result is
+
+(((x * 3) + 12) * x) - 17 = 3x^2 + 12x - 17 mod 2^32

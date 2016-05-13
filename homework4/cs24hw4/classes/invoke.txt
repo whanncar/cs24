@@ -1,0 +1,17 @@
+/*
+ * This assembly code implements the retrieval and execution
+ * of the relevant function to be computed based on the class.
+ *
+ */
+
+
+
+movl 8(%ebp), %eax  /* Move pointer to object into eax */
+movl *(%eax), %eax  /* Move pointer to getVolume method 
+                     * of class of object into eax by getting
+                     * a pointer to the class of the object
+                     * and retrieving the first element of
+                     * the class struct
+                     */
+pushl 8(%ebp)       /* Push pointer to object onto the stack */
+call %eax           /* Call function*/

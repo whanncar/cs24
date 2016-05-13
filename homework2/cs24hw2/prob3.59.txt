@@ -1,0 +1,117 @@
+
+Human readable form:
+
+0: Push the frame pointer
+1: Copy the stack pointer into the frame pointer
+2: Copy x into eax
+3: Copy y into edx
+4: Subtract 50 from y
+5: Compare 5 and y
+6: If 5 > y, jump to line 14
+7: Jump to the address in entry y of the jump table
+8: Shift x left by 2
+9: Jump to line 15
+10: Shift x arithmetically right by 2
+11: Jump to line 15
+12: Multiply x by 3
+13: Square x
+14: Add 10 to x
+15: Pop the frame pointer
+16: Return
+
+
+Pseudocode:
+
+switch_prob(x, n):
+
+  result = x
+
+  n -= 50
+
+  if n <= 5:
+
+    if n == 0:
+
+      result << 2
+      break
+
+    if n == 1:
+
+      result += 10
+      break
+
+    if n == 2:
+
+      result << 2
+      break
+
+    if n == 3:
+
+      result >> 2
+      break
+
+    if n == 4:
+
+      result *= 3
+      result *= result
+      result += 10
+      break
+
+    if n == 5:
+
+      result *= result
+      result += 10
+      break
+
+
+
+Code:
+
+
+int switch_prob(int x, int n)
+{
+
+  int result = x;
+
+  switch(n) {
+
+    case 50:
+    case 52:
+      result <<= 2;
+      break;
+
+    case 53:
+      result >>= 2;
+      break;
+
+    case 54:
+      result *= 3;
+
+    case 55:
+      result *= result;
+
+    case 51:
+      result += 10;
+      break;
+
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

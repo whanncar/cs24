@@ -1,0 +1,102 @@
+1.
+
+
+if there are zero elements
+    return
+
+if there is one element
+    return
+
+if there are two elements
+    swap the head and the tail
+    set the new head's next to be the new tail
+    set the new tail's next to NULL
+
+if there are more than two elements
+
+    set the head's next to NULL
+
+    store pointer to the head in local variable current_node
+    store pointer to the head's next in local variable next_node
+    store the head's next's next in local variable next_next_node
+
+    while next_next_node is not the tail
+
+        set next_node's next to current_node
+
+        shift everything "right" by setting:
+            current_node = next_node
+            next_node = next_next_node
+            next_next_node = next_node's next
+
+    set second to last node's (ie next_node's) next to
+                                        third to last node (ie current_node)
+    set last node's (ie next_next_node's) next to
+                                        second to last node (ie next_node)
+
+    swap the head and the tail
+
+
+
+2.
+
+---------------------------------------------------
+
+if there are zero elements
+    return
+
+-----------------
+
+test whether the head is NULL
+jump past all other cases if so
+
+---------------------------------------------------
+
+if there is one element
+    return
+
+----------------
+
+test whether the head is the same as the tail
+jump past all other cases if so
+
+---------------------------------------------------
+
+if there are two elements
+    do stuff
+
+-----------------
+
+test whether head's next is the same as tail
+if not, jump past stuff
+otherwise, do stuff, then jump past other case
+
+---------------------------------------------------
+
+if there are more than two elements
+    do stuff
+
+-----------------
+
+NOTE: If we make it to this point, we know there are
+      more than two elements, so there is no need
+      to do anything conditional here
+
+---------------------------------------------------
+
+while next_next_node is not the tail
+    do stuff
+
+-----------------
+
+test whether next_next_node is the tail
+if it is, jump past stuff
+otherwise, do the stuff
+test whether next_next_node is the tail
+if it is not, jump back to the beginning of stuff
+
+---------------------------------------------------
+
+
+
+

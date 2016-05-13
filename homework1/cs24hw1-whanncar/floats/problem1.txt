@@ -1,0 +1,25 @@
+a.
+
+0.0001100110011001100110011[0011] - 0.00011001100110011001100[0000] = 0.0000000000000000000000011[0011]
+
+
+
+b.
+
+.1 - (2^-4 + 2^-5 + 2^-8 + 2^-9 + 2^-12 + 2^-13 + 2^-16 + 2^-17 + 2^-20 + 2^-21) is approximately 9.53674316*10^-8
+
+
+
+c.
+
+100 hours = 360000 seconds = 3600000 .1 second intervals, so the difference between the actual time and the time computed by the software was approximately (9.53674316*10^-8)*(3600000) = .3433 seconds.
+
+
+
+d.
+
+The prediction was approximately (.3433 seconds)*(2000 meters/second) = 686.6 meters off.
+
+
+
+

@@ -1,0 +1,68 @@
+
+
+Our program will actually run as follows
+
+    BZ R2, Endloop                                                  [1 cs]
+Loop:
+    Get access from arbiter    [2 cs usually, possibly 1 cs on first pass]
+    LD R0, R3                                                       [1 cs]
+    ADD R3, R4, R5/A stops requesting access                        [1 cs]
+    Arbiter ungrants access and makes it B's turn/A requests access [1 cs]
+    Get access from arbiter                                         [1 cs]
+    ST R5, R7                                                       [1 cs]
+    INC R0/A stops requesting access                                [1 cs]
+    INC R1/Arbiter ungrants access and makes it B's turn            [1 cs]
+    INC R7/Arbiter makes it A's turn                                [1 cs]
+    DEC R2/Arbiter makes it B's turn                                [1 cs]
+    BNZ R2, Loop/Arbiter makes it A's turn                          [1 cs]
+EndLoop:
+    DONE                                                            [1 cs]
+
+The total number of clock cyles for a given pass of the loop without
+the overhead from the arbiter is 9. Thus, without the overhead from
+the arbiter, the sum will require 1 + 9 * 100 + 1 = 902 clock cyles.
+
+The total number of clock cyles for a given pass of the loop with
+the overhead from the arbiter is 12 (except possibly the first pass).
+Thus, with the overhead from the arbiter, the sum will require
+either 1 + 11 + 12 * 99 + 1 = 1201 or 1 + 12 * 100 + 1 = 1202 clock
+cycles.
+
+Thus, the sum will take approximately 4/3 as long with the arbiter.
+
+
+
+
+In the worst case, our program will run as follows
+
+(I am assuming the processors begin execution of the program at the same time)
+
+    BZ R2, Endloop                                                  [1 cs]
+Loop:
+    A requests access/B performs increments or awaits access        [1 cs]
+    A gets access from arbiter                                      [1 cs]
+    LD R0, R3                                                       [1 cs]
+    ADD R3, R4, R5/A stops requesting access                        [1 cs]
+    Arbiter ungrants access and makes it B's turn/A requests access [1 cs]
+    Arbiter grants access to B                                      [1 cs]
+    B performs the LD operation                                     [1 cs]
+    B stops requesting access and performs the ADD                  [1 cs]
+    Arbiter ungrants access and makes it A's turn/B requests access [1 cs]
+    A gets access from arbiter                                      [1 cs]
+    ST R5, R7                                                       [1 cs]
+    INC R0/A stops requesting access                                [1 cs]
+    INC R1/Arbiter ungrants access and makes it B's turn            [1 cs]
+    INC R7/Arbiter grants access to B                               [1 cs]
+    DEC R2/B performs ST operation                                  [1 cs]
+    BNZ R2, Loop/B stops requesting access                          [1 cs]
+EndLoop:
+    DONE                                                            [1 cs]
+
+
+
+The total number of clock cycles for a given pass of the loop is now
+approximately 16, so with the overhead from the arbiter, the sum
+will require around 1 + 16 * 100 + 1 = 1602 clock cyles.
+
+Thus, the sum will now take approximately 16/9 times as long as
+it does in the no arbiter case.
